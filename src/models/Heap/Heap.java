@@ -17,7 +17,6 @@ package models.Heap;
  * 
  * @param <T> O tipo de elemento armazenado na Heap.
  */
-
 public abstract class Heap<T> {
     protected HeapNode<T>[] heap;
     public int capacity;
@@ -69,10 +68,6 @@ public abstract class Heap<T> {
     final public void push(T element, int key) {
         HeapNode<T> node = new HeapNode<T>(key, element);
 
-        if (exists(node)) {
-            return;
-        }
-
         if (current_size == capacity) {
             resize();
         }
@@ -91,7 +86,7 @@ public abstract class Heap<T> {
         if (current_size == 0)
             return null;
         HeapNode<T> root = heap[0];
-        heap[0] = heap[current_size - 1];
+        swap(0, current_size - 1);
         current_size--;
         heapDown();
         return root.element;

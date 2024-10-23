@@ -71,7 +71,7 @@ public class MaxHeap<T> extends Heap<T> {
      * Método que insere um elemento na MaxHeap.
      * 
      * @param element O elemento a ser inserido.
-     * @param key     A chave do elemento a ser inserido.
+     * @param code    A chave do elemento a ser inserido.
      * @return void
      */
     static MaxHeap<Object> heapify(Object[] array, int[] priorities) {

@@ -64,7 +64,7 @@ public class MinHeap<T> extends Heap<T> {
      * Método que insere um elemento na MinHeap.
      * 
      * @param element O elemento a ser inserido.
-     * @param key     A chave do elemento a ser inserido.
+     * @param code    A chave do elemento a ser inserido.
      * @return void
      */
     static MinHeap<Object> heapify(Object[] elements, int[] priorities) {
