@@ -1,10 +1,14 @@
 package models.HashTable;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
-public class OpenAddressing<T> {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
+@SuppressWarnings({ "unchecked" })
+public class OpenAddressing<K, V> {
     int capacity;
     int current_size;
-    HashNode[] table;
+    HashNode<K, V>[] table;
 
     public OpenAddressing(int capacity) {
         this.table = new HashNode[capacity];
@@ -14,30 +18,25 @@ public class OpenAddressing<T> {
 
     // Métodos públicos que podem ser utilizados por qualquer classe
 
-    public T get(int key) {
-        HashNode<T> node = searchNode(key);
+    public V get(K key) {
+        HashNode<K, V> node = searchNode(key);
         if (node != null) {
-            System.out.println("Elemento encontrado.");
-            return node.element;
+            return node.value;
         }
-        System.out.println("Elemento não encontrado.");
         return null;
     }
 
-    public void add(int code, T new_element) {
+    public void put(K key, V value) {
         int index;
         int num_attempts = 0;
 
-        HashNode<T> new_node = new HashNode<T>();
-        new_node.element = new_element;
-
         do {
             num_attempts++;
-            index = linearAttempt(code, num_attempts);
-            HashNode node = table[index];
+            index = linearAttempt(key.hashCode(), num_attempts);
+            HashNode<K, V> node = table[index];
 
-            if (node != null && node.code == code) {
-                System.out.println("Elemento já existe na tabela.");
+            if (node != null && node.key.equals(key)) {
+                node.value = value;
                 return;
             }
 
@@ -48,36 +47,26 @@ public class OpenAddressing<T> {
             return;
         }
 
-        table[index] = new HashNode<>();
-        table[index].element = new_element;
+        table[index] = new HashNode<>(key, value);
         current_size++;
     }
 
-    public void update(int key, T element) {
-        HashNode node = searchNode(key);
+    public V remove(K key) {
+        HashNode<K, V> node = searchNode(key);
+        V value = null;
         if (node != null) {
-            node.element = element;
-            System.out.println("Elemento atualizado.");
-        }
-    }
-
-    public T remove(int key) {
-        HashNode node = searchNode(key);
-        T element = null;
-        if (node != null) {
-            element = (T) node.element;
-            node.element = null;
-            table[hash(key)] = null;
+            value = node.value;
+            node.value = null;
+            table[hash(key.hashCode())] = null;
             current_size--;
-            System.out.println("Elemento removido.");
         }
-        return element;
+        return value;
     }
 
     public void print() {
         for (int i = 0; i < capacity; i++) {
             if (table[i] != null) {
-                System.out.println("Index: " + i + " da tabela hash: " + table[i].element);
+                System.out.println("Index: " + i + " da tabela hash: " + table[i].value);
             }
         }
     }
@@ -103,13 +92,13 @@ public class OpenAddressing<T> {
     }
 
     // Métodos de acesso
-    private HashNode<T> searchNode(int key) {
+    private HashNode<K, V> searchNode(K key) {
         int index;
         int num_attempts = 0;
 
         do {
-            index = linearAttempt(key, num_attempts);
-            if (table[index].code == key) {
+            index = linearAttempt(key.hashCode(), num_attempts);
+            if (table[index] != null && table[index].key.equals(key)) {
                 return table[index];
             }
 
@@ -120,4 +109,38 @@ public class OpenAddressing<T> {
         return null;
     }
 
+    // Classe interna para representar um nó na tabela hash
+    private static class HashNode<K, V> {
+        K key;
+        V value;
+
+        HashNode(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    public Entry<Character, String>[] entrySet() {
+        List<Entry<Character, String>> entries = new ArrayList<>();
+        for (HashNode<K, V> node : table) {
+            if (node != null) {
+                entries.add((Entry<Character, String>) node);
+            }
+        }
+        return entries.toArray(new Entry[0]);
+    }
+
+    public char[] keys() {
+        List<Character> keys = new ArrayList<>();
+        for (HashNode<K, V> node : table) {
+            if (node != null) {
+                keys.add((Character) node.key);
+            }
+        }
+        char[] keysArray = new char[keys.size()];
+        for (int i = 0; i < keys.size(); i++) {
+            keysArray[i] = keys.get(i);
+        }
+        return keysArray;
+    }
 }
