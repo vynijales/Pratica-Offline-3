@@ -30,6 +30,7 @@ public class HuffmanTree {
 
             minHeap.push(parent, parent.frequency);
         }
+        buildCodeTree(root, "");
     }
 
     public void buildCodeTree(HuffmanNode node, String code) {
@@ -64,12 +65,20 @@ public class HuffmanTree {
         _printRecursive(node.right, code + "1");
     }
 
-    public void encode(String text) {
+    public String encode(String text) {
         String result = "";
         for (char c : text.toCharArray()) {
             result += hashtable.get(c);
         }
 
         System.out.println(result);
+        System.out.println();
+        return result;
+    }
+
+    // Precisa retornar uma String de um binário 0 é esquerda e 1 é direita, a
+    // resposta será similar a "001"
+    public String getEncoded(Character c) {
+        return hashtable.get(c);
     }
 }
