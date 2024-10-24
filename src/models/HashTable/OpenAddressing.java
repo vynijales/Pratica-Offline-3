@@ -111,7 +111,7 @@ public class OpenAddressing<K, V> {
 
             num_attempts++;
 
-        } while (num_attempts < capacity && table[index] != null);
+        } while (num_attempts < capacity && table[index] == null);
 
         return null;
     }
