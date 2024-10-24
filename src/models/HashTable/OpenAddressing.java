@@ -51,6 +51,13 @@ public class OpenAddressing<K, V> {
         current_size++;
     }
 
+    public void update(K key, V value) {
+        HashNode<K, V> node = searchNode(key);
+        if (node != null) {
+            node.value = value;
+        }
+    }
+
     public V remove(K key) {
         HashNode<K, V> node = searchNode(key);
         V value = null;
