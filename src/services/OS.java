@@ -22,7 +22,7 @@ public class OS {
 
     @Override
     public String toString() {
-        return "OrdemServico -> Código " + code + ", nome " + name + ", descricao " + description + " - " + datetime;
+        return code + "|" + name + "|" + description + "|" + datetime;
 
     }
 

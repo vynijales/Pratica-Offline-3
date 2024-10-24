@@ -24,22 +24,21 @@ public class Cliente {
         scanner.nextLine(); // Limpar o buffer
 
         OS os = cache.get(codigo);
-        System.out.println();
         if (os != null) {
-            System.out.println("Ordem de Serviço encontrada na cache:");
-            System.out.println(os);
+            System.out.println("Ordem de Serviço encontrada na cache: " + os);
             return;
+        } else {
+            System.out.println("Ordem de Serviço não encontrada na cache.");
         }
 
         os = servidor.get(codigo);
         if (os != null) {
             cache.add(os);
-            System.out.println("Ordem de Serviço encontrada no servidor:");
-            System.out.println(os);
+            System.out.println("Ordem de Serviço encontrada no servidor: " + os);
             return;
+        } else {
+            System.out.println("Ordem de Serviço não encontrada no servidor.");
         }
-
-        System.out.println("Ordem de Serviço não encontrada.");
     }
 
     public void add() throws IOException {
