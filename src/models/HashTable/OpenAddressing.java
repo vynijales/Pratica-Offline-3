@@ -59,14 +59,23 @@ public class OpenAddressing<K, V> {
     }
 
     public V remove(K key) {
-        HashNode<K, V> node = searchNode(key);
         V value = null;
+
+        HashNode<K, V> node = searchNode(key);
+
         if (node != null) {
             value = node.value;
-            node.value = null;
-            table[hash(key.hashCode())] = null;
+
+            for (int i = 0; i < capacity; i++) {
+                if (table[i] != null && table[i].key.equals(key)) {
+                    table[i] = null;
+                    break;
+                }
+            }
+
             current_size--;
         }
+
         return value;
     }
 

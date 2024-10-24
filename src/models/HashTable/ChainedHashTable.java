@@ -51,6 +51,7 @@ public class ChainedHashTable<T> {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public void remove(Integer key) {
         Node target = searchNode(key);
 
@@ -59,8 +60,22 @@ public class ChainedHashTable<T> {
         }
 
         int index = key.hashCode() % capacity;
-
         Node<T> node = table[index];
+        Node<T> prev = null;
+
+        while (node != null) {
+            if (node.key.equals(key)) {
+                if (prev == null) {
+                    table[index] = node.next;
+                } else {
+                    prev.next = node.next;
+                }
+                current_size--;
+                return;
+            }
+            prev = node;
+            node = node.next;
+        }
 
     }
 
